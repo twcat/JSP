@@ -1,13 +1,13 @@
 <%@page contentType="text/html"%>
 <%@page pageEncoding="BIG5"%>
 <%@page import="java.sql.*"%>
-
+<jsp:useBean id='objDBConfig' scope='session' class='hitstd.group.tool.database.DBConfig' />
 <%
-session.setAttribute("access","n");
+session.setAttribute("access","n");//access="n"
 if(request.getParameter("memberid") !=null &&
 	request.getParameter("memberpwd") !=null){
 Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-	Connection con=DriverManager.getConnection("jdbc:ucanaccess://C:\\Program Files\\Apache Software Foundation\\Tomcat 9.0\\webapps\\ttest\\src\\main\\webapp\\member.accdb;");
+	Connection con=DriverManager.getConnection("jdbc:ucanaccess://"+objDBConfig.FilePath()+";");
 	Statement smt= con.createStatement
 			(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
 	String getpaperdata = "SELECT * FROM member WHERE memberid='"+
@@ -15,7 +15,7 @@ Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
 			request.getParameter("memberpwd")+"'";
 	ResultSet paperrs = smt.executeQuery(getpaperdata);
 	if(paperrs.next()){
-		session.setAttribute("access","y");
+		session.setAttribute("access","y");//access="y"
 		session.setAttribute("accessid",request.getParameter("memberid"));
 		session.setMaxInactiveInterval(5);
 		response.sendRedirect("accesspagea.jsp");
